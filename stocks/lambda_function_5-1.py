@@ -1,7 +1,7 @@
 import json
 
 def lambda_handler(event, context):
-    print(json.dumps(evetnt, indent=4))
+    print(json.dumps(event, indent=4))
     # JSON形式の戻り値を設定する
     return {
         'statusCode' : 200,
