@@ -11,9 +11,9 @@ dynamodb = boto3.resource('dynamodb')
 def next_seq(table, tablename):
     response = table.update_item(
         Key = {
-            'table' : tablename
+            'tablename' : tablename
         },
-        UpdateExpression = "seq seq = seq + :val",
+        UpdateExpression = "set seq = seq + :val",
         ExpressionAttributeValues = {
             ':val' : 1
         },
@@ -45,8 +45,8 @@ def lambda_handler(event, context):
                 'id' : nextseq,
                 'username' : username,
                 'email' : email,
-                'acccepted_at' : decimal.Decimal(str(now)),
-                'host' : host,
+                'accepted_at' : decimal.Decimal(str(now)),
+                'host' : host
             }
         )
 
@@ -56,15 +56,15 @@ def lambda_handler(event, context):
             'headers' : {
                 'content-type' : 'text/html'
             },
-            'body' : '<!DOCTYPE html><html><head><meta charset="UTF-8"><body>登録ありがとうございました。</body></head></html>'
+            'body' : '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>登録ありがとうございました。</body></html>'
         }
-        except:
-            import traceback
-            traceback.print_exec()
-            return {
-                'statusCode' : 500,
-                'headers' : {
-                    'content-type' : 'text/html'
-                },
-                'body' : '<!DOCTYPE html><html><head><meta charset="UTF-8"><body>内部エラーが発生しました。</body></head></html>'
+    except:
+        import traceback
+        traceback.print_exec()
+        return {
+            'statusCode' : 500,
+            'headers' : {
+                'content-type' : 'text/html'
+            },
+            'body' : '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>内部エラーが発生しました。</body></html>'
         }
