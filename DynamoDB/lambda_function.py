@@ -3,6 +3,7 @@ import boto3
 import urllib
 import time
 import decimal
+import traceback
 
 # DynamoDB オブジェクト
 dynamodb = boto3.resource('dynamodb')
@@ -10,14 +11,14 @@ dynamodb = boto3.resource('dynamodb')
 # 連番を更新して返す関数
 def next_seq(table, tablename):
     response = table.update_item(
-        Key = {
+        Key={
             'tablename' : tablename
         },
-        UpdateExpression = "set seq = seq + :val",
-        ExpressionAttributeValues = {
+        UpdateExpression="set seq = seq + :val",
+        ExpressionAttributeValues={
             ':val' : 1
         },
-        ReturnValues = 'UPDATE_NEW'
+        ReturnValues='UPDATED_NEW'
     )
     return response['Attributes']['seq']
 
@@ -59,8 +60,7 @@ def lambda_handler(event, context):
             'body' : '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>登録ありがとうございました。</body></html>'
         }
     except:
-        import traceback
-        traceback.print_exec()
+        traceback.print_exc()
         return {
             'statusCode' : 500,
             'headers' : {
