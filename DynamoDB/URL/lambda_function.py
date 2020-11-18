@@ -45,8 +45,7 @@ def lambda_handler(event, context):
             ClientMethod = 'get_object',
             Params = {'Bucket' : 'secret-web-000', 'Key' : 'special.pdf'}, 
             ExpiresIn = 48 * 24 * 60 * 60, 
-            HttpMethod = 'GET'
-        )
+            HttpMethod = 'GET')
 
         # userテーブルに登録する
         usertable = dynamodb.Table("user")
@@ -56,7 +55,7 @@ def lambda_handler(event, context):
                 'username' : username,
                 'email' : email,
                 'accepted_at' : decimal.Decimal(str(now)),
-                'host' : host
+                'host' : host,
                 'url' : url
             }
         )
